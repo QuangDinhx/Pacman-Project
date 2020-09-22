@@ -19,6 +19,8 @@ Pacman agents (in searchAgents.py).
 
 import util
 from util import Stack
+from util import Queue
+from util import PriorityQueue
 
 class SearchProblem:
     """
@@ -96,37 +98,28 @@ def depthFirstSearch(problem):
     #Get start state
     startState = problem.getStartState()
 
-    print(startState)
+    # print(startState)
 
     if(problem.isGoalState(startState)):
         return []
 
     dfs.push((startState,[]))
 
-    while(dfs.isEmpty() == False):
+    while(not dfs.isEmpty()):
        
         pos,rs = dfs.pop()
-        # visied this pos 
-        visited.append(pos)
-
-        # is current is goal
+        # if current is goal
         if (problem.isGoalState(pos)):
             return rs
-        
-        # next states
-        next = problem.getSuccessors(pos)
-        if (next):
-            for x in next:
-                if(x[0] not in visited):
+        if (pos not in visited):
+            visited.append(pos)
+            #get next states
 
-                    #x[0] is position of pacman
-                    #x[1] is action
-                    #x[3] is cost
-                    # if current pos is not visited add it and new route to stack
-                    # #newrs is new path ( current path + next path  ) 
-                   
-                    newrs = rs + [x[1]]
-                    dfs.push((x[0],newrs))
+            next = problem.getSuccessors(pos)
+            #push next states into stack to wait to visite
+            for item in next:
+                if(item[0] not in visited):
+                    dfs.push((item[0],rs + [item[1]]))
     
     #if no solution:
     return []
@@ -135,7 +128,39 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+   # create a stack to bfs and save the path
+    bfs = Queue()
+    rs = []
+    # to vistie node 
+    visited = []
+    #Get start state
+    startState = problem.getStartState()
+
+    # print(startState)
+
+    if(problem.isGoalState(startState)):
+        return []
+
+    bfs.push((startState,[]))
+
+    while(not bfs.isEmpty()):
+       
+        pos,rs = bfs.pop()
+        # if current is goal
+        if (problem.isGoalState(pos)):
+            return rs
+        if (pos not in visited):
+            visited.append(pos)
+            #get next states
+
+            next = problem.getSuccessors(pos)
+            #push next states into queue to wait to visite
+            for item in next:
+                if(item[0] not in visited):
+                    bfs.push((item[0],rs + [item[1]]))
+    
+    #if no solution:
+    return []
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
