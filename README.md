@@ -9,7 +9,9 @@ This project is my solutions of Berkeley Pacman solution
     Thêm 1 list để lưu các action trả về cho pacman biết đường di chuyển.
     Một list để kiểm tra xem pacman đã đi qua vị trí này chưa
 
-    Sử dụng hàm getStartState() ở search.py để lấy trạng thái khởi đầu ( là một tọa độ). Kiểm tra vị trí này liệu nó phải kết thúc chưa bằng hàm ísGoalState().
+    Sử dụng hàm getStartState() ở search.py để lấy trạng thái khởi đầu ( là một tọa độ). Kiểm tra vị trí này liệu nó phải kết thúc 
+    chưa bằng hàm ísGoalState().
+
     Nếu đúng trả về list các action còn không ta bắt đầu duyệt.
 
     Đưa trạng thái và các action cho đến hiện tại vào stack.
