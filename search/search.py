@@ -18,9 +18,7 @@ Pacman agents (in searchAgents.py).
 """
 
 import util
-from util import Stack
-from util import Queue
-from util import PriorityQueue
+from util import Stack, Queue, PriorityQueue
 
 class SearchProblem:
     """
@@ -103,6 +101,7 @@ def depthFirstSearch(problem):
     if(problem.isGoalState(startState)):
         return []
 
+
     dfs.push((startState,[]))
 
     while(not dfs.isEmpty()):
@@ -141,6 +140,7 @@ def breadthFirstSearch(problem):
     if(problem.isGoalState(startState)):
         return []
 
+        
     bfs.push((startState,[]))
 
     while(not bfs.isEmpty()):
@@ -165,7 +165,36 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    
+    ucs = PriorityQueue()
+    rs = []
+   
+    visited = []
+   
+    startState = problem.getStartState()
+
+    if(problem.isGoalState(startState)):
+        return []
+
+    cost = 0
+    ucs.push((startState,[], cost),cost)
+
+    while(not ucs.isEmpty()):
+       
+        state,rs,xcost = ucs.pop()
+       
+       
+        if (problem.isGoalState(state)):
+            return rs
+        if (state not in visited):
+            visited.append(state)
+            for next, path, ucost in problem.getSuccessors(state):
+                if next:     
+                    if next not in visited:
+                        ucs.push((next, rs + [path], ucost + xcost), ucost + xcost )
+    
+    #if no solution:
+    return []
 
 def nullHeuristic(state, problem=None):
     """
@@ -177,7 +206,35 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    Astar = PriorityQueue()
+    rs = []
+   
+    visited = []
+   
+    startState = problem.getStartState()
+
+    if(problem.isGoalState(startState)):
+        return []
+
+    cost = 0
+    Astar.push((startState,[], cost),cost)
+
+    while(not Astar.isEmpty()):
+       
+        state,rs,xcost = Astar.pop()
+       
+       
+        if (problem.isGoalState(state)):
+            return rs
+        if (state not in visited):
+            visited.append(state)
+            for next, path, ucost in problem.getSuccessors(state):
+                if next:     
+                    if next not in visited:
+                        Astar.push((next, rs + [path], ucost + xcost), ucost + xcost + heuristic(next, problem))
+    
+    #if no solution:
+    return []
 
 
 # Abbreviations
