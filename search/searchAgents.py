@@ -41,7 +41,7 @@ import util
 import time
 import search
 import random
-from util import manhattanDistance
+from util import manhattanDistance, euclideanDistance
 
 class GoWestAgent(Agent):
     "An agent that goes West until it can't."
@@ -263,6 +263,7 @@ def euclideanHeuristic(position, problem, info={}):
     xy1 = position
     xy2 = problem.goal
     return ( (xy1[0] - xy2[0]) ** 2 + (xy1[1] - xy2[1]) ** 2 ) ** 0.5
+
 
 #####################################################
 # This portion is incomplete.  Time to write code!  #
@@ -529,12 +530,48 @@ class ClosestDotSearchAgent(SearchAgent):
         """
         # Here are some useful elements of the startState
         startPosition = gameState.getPacmanPosition()
+    
         food = gameState.getFood()
         walls = gameState.getWalls()
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return xSearch(problem)
+
+
+def xSearch(problem):
+    """Search the node that has the lowest combined cost and heuristic first."""
+    "*** YOUR CODE HERE ***"
+    g = util.PriorityQueue()
+    rs = []
+   
+    visited = []
+   
+    startState = problem.getStartState()
+
+    if(problem.isGoalState(startState)):
+        return []
+
+    cost = 0
+    g.push((startState,[], cost),cost)
+
+    while(not g.isEmpty()):
+       
+        state,rs,xcost = g.pop()
+       
+       
+        if (problem.isGoalState(state)):
+            return rs
+        if (state not in visited):
+            visited.append(state)
+            for next, path, ucost in problem.getSuccessors(state):
+                if next:     
+                    if next not in visited:
+                        g.push((next, rs + [path], ucost + xcost), ucost + xcost + euclideanDistance(problem.startState, next))
+    
+    #if no solution:
+    return []
+
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -570,7 +607,11 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        y = self.food.asList()
+        if state in y:
+            return True
+        else:
+            return False
 
 def mazeDistance(point1, point2, gameState):
     """
