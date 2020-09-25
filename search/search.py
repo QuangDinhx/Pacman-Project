@@ -95,6 +95,7 @@ def depthFirstSearch(problem):
     visited = []
     #Get start state
     startState = problem.getStartState()
+    print(startState)
 
     # print(startState)
 
