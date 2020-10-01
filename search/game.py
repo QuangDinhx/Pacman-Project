@@ -228,7 +228,7 @@ class Grid:
 
     def packBits(self):
         """
-        Returns an efficient int list representation
+      
 
         (width, height, bitPackedInts...)
         """

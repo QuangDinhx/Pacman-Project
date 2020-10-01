@@ -18,6 +18,7 @@ Pacman agents (in searchAgents.py).
 """
 
 import util
+from util import Stack, Queue, PriorityQueue
 
 class SearchProblem:
     """
@@ -87,17 +88,118 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    # create a stack to dfs and save the path
+    dfs = Stack()
+    rs = []
+    # to vistie node 
+    visited = []
+    #Get start state
+    startState = problem.getStartState()
+    print(startState)
+
+    # print(startState)
+
+    if(problem.isGoalState(startState)):
+        return []
+
+
+    dfs.push((startState,[]))
+
+    while(not dfs.isEmpty()):
+       
+        pos,rs = dfs.pop()
+        # if current is goal
+        if (problem.isGoalState(pos)):
+            return rs
+        if (pos not in visited):
+            visited.append(pos)
+            #get next states
+
+            next = problem.getSuccessors(pos)
+            #push next states into stack to wait to visite
+            for item in next:
+                if(item[0] not in visited):
+                    dfs.push((item[0],rs + [item[1]]))
+    
+    #if no solution:
+    return []
+
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+   # create a stack to bfs and save the path
+    bfs = Queue()
+    rs = []
+    # to vistie node 
+    visited = []
+    #Get start state
+    startState = problem.getStartState()
+
+    # print(startState)
+
+    if(problem.isGoalState(startState)):
+        return []
+
+        
+    bfs.push((startState,[]))
+
+    while(not bfs.isEmpty()):
+       
+        pos,rs = bfs.pop()
+        print(rs)
+        # if current is goal
+        if (problem.isGoalState(pos)):
+            return rs
+        if (pos not in visited):
+            visited.append(pos)
+            #get next states
+
+            next = problem.getSuccessors(pos)
+            #push next states into queue to wait to visite
+            for item in next:
+                if(item[0] not in visited):
+                    bfs.push((item[0],rs + [item[1]]))
+    
+    #if no solution:
+    return []
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    
+    ucs = PriorityQueue()
+    rs = []
+   
+    visited = []
+   
+    startState = problem.getStartState()
+
+    if(problem.isGoalState(startState)):
+        return []
+
+    cost = 0
+    ucs.push((startState,[], cost),cost)
+
+    while(not ucs.isEmpty()):
+       
+        state,rs,xcost = ucs.pop()
+       
+       
+        if (problem.isGoalState(state)):
+            return rs
+        if (state not in visited):
+            visited.append(state)
+            for next, path, ucost in problem.getSuccessors(state):
+                if next:     
+                    if next not in visited:
+                        ucs.push((next, rs + [path], ucost + xcost), ucost + xcost )
+    
+    #if no solution:
+    return []
+
+
+
 
 def nullHeuristic(state, problem=None):
     """
@@ -106,10 +208,40 @@ def nullHeuristic(state, problem=None):
     """
     return 0
 
+
+
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    Astar = PriorityQueue()
+    rs = []
+   
+    visited = []
+   
+    startState = problem.getStartState()
+
+    if(problem.isGoalState(startState)):
+        return []
+
+    cost = 0
+    Astar.push((startState,[], cost),cost)
+
+    while(not Astar.isEmpty()):
+       
+        state,rs,xcost = Astar.pop()
+       
+       
+        if (problem.isGoalState(state)):
+            return rs
+        if (state not in visited):
+            visited.append(state)
+            for next, path, ucost in problem.getSuccessors(state):
+                if next:     
+                    if next not in visited:
+                        Astar.push((next, rs + [path], ucost + xcost), ucost + xcost + heuristic(next, problem))
+    
+    #if no solution:
+    return []
 
 
 # Abbreviations
