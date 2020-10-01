@@ -147,6 +147,7 @@ def breadthFirstSearch(problem):
     while(not bfs.isEmpty()):
        
         pos,rs = bfs.pop()
+        print(rs)
         # if current is goal
         if (problem.isGoalState(pos)):
             return rs

@@ -294,6 +294,9 @@ class CornersProblem(search.SearchProblem):
         self.startingGameState = startingGameState
         self.visited_coner = [False,False,False,False]
 
+        if self.startingPosition in self.corners:
+            self.visited_coner[self.corners.index(self.startingPosition)] = True
+
     def getStartState(self):
         """
         Returns the start state (in your state space, not the full Pacman state
