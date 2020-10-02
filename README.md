@@ -68,7 +68,35 @@ This project is my solutions of Berkeley Pacman solution
 
         +)Vòng lặp dừng khi Queue rỗng.
 
-### Q4 Astar
+### Q4: Astar
     Lúc này làm tương tự bài 3 ngoại trừ biến ưu tiên được truyền khác. Lúc này ngoại trừ chi phí đi đến 
     điểm đó từ vị trí khởi đầu ta cần cộng thêm giá trị hàm "kinh nghiệm" - là một hàm ước tính chi phí 
     từ trạng thái hiện tại đến đích của bài toán. Hàm này được cung cấp sẵn trong search.py.
+
+### Q5: Finding All the Corners
+    Ở bài này ta phải định nghĩa getStartState, isGoalState và getSuccessors để sao cho khi tìm kiếm tất
+    cả các góc với thuật toán bfs bằng searchAgent này sẽ thu được kết quả đúng. Vì đề yêu cầu phải đi
+    qua 4 góc được lưu tọa độ trong self.coners ta tạo 1 mảng đánh dấu góc đã được đi qua chưa bằng True,
+    False rồi trả về ở getStartState. Điều kiện dừng là khi mảng trên đều mang giá trị true (đã đi qua).
+    Hàm getSuccessors trả về mảng gồm state, action và cost trong đó state[0] là tọa độ, state[1] là
+    mảng đánh dấu góc đã đi qua khi pacman ở tọa đô state[0] và thực hiện những action tương ứng.
+    Ta chỉ cần kiểm qua Pacman có đi được trong 4 hướng di chuyển không, di chuyển được thì có đi qua
+    góc không, nếu có thì thay đổi mảng đánh dấu tại góc đó thành true. Rồi đẩy vào mảng successors. 
+
+### Q6: Corners Problem: Heuristic
+    Hàm cornersHeuristic cần trả về giá trị là một số xác định. Giá trị đó là giá trị "kinh nghiệm",
+    ước lượng chi phí từ điểm hiện tại đi đến đích. Giá trị này dùng khi thuật toán tìm kiếm là A*.
+    Ta chỉ cần tạo 1 mảng lưu khoảng cách manhattan từ ví trí hiện tại đến những góc chưa đi qua.
+    Rồi trả về giá trị lớn nhất của mảng để ước lượng.
+### Q7: Eating All The Dots
+    Giống như bài trước chỉ cần trả về 1 giá trị cụ thể. Và đích trong vài này là ăn hết đồ ăn trong
+    mê cung. Nếu dùng manhattan để ước lượng thì điểm sẽ không tối đa do pacman rẽ quá nhiều. Vì vậy
+    em dùng hàm mazeDistance để do khoảng cách giữa 2 điểm trong trạng thái bất kì của mê cung. Lưu 
+    chúng lại thàng mảng rồi trả về giá trị lớn nhất.
+### Q8: Suboptimal Search
+    Do A* trong một số trường hợp cũng không thể cho chúng ta kết quả tối ưu nên có thể dùng tư duy
+    tham lam để ăn hết thức ăn, đó là ăn thức ăn gần mình nhất. Vì cần thiết kế một cách duyệt luôn
+    đi đến điểm có thức ăn gần nhất trước. Tuy nhiên không phải lúc nào cũng tìm được đường ngắn
+    nhất tring suốt mê cung cho nên ta có thể ước lượng. Dùng cách duyệt bằng hàng đợi ưu tiên với
+    tham số ưu tiên là khoảng cách manhatan từ điểm hiện tại đến các điểm cần đến để khi pop ra ta
+    lấy được điểm có khoảng cách manhatan bé nhất.
