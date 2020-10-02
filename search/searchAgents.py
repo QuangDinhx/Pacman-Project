@@ -397,7 +397,7 @@ def cornersHeuristic(state, problem):
         x = []
         for i in range(len(state[1])):
             if state[1][i] is False:
-                x.append(mazeDistance(state[0],corners[i],problem.startingGameState))
+                x.append(manhattanDistance(state[0],corners[i]))
         
         return max(x)
     
@@ -570,7 +570,7 @@ def xSearch(problem):
             for next, path, ucost in problem.getSuccessors(state):
                 if next:     
                     if next not in visited:
-                        g.push((next, rs + [path], ucost + xcost), ucost + xcost + euclideanDistance(problem.startState, next))
+                        g.push((next, rs + [path], ucost + xcost),manhattanDistance(problem.startState, next))
     
     #if no solution:
     return []

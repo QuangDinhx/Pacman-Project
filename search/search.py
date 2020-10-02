@@ -95,7 +95,7 @@ def depthFirstSearch(problem):
     visited = []
     #Get start state
     startState = problem.getStartState()
-    print(startState)
+    
 
     # print(startState)
 
@@ -147,7 +147,7 @@ def breadthFirstSearch(problem):
     while(not bfs.isEmpty()):
        
         pos,rs = bfs.pop()
-        print(rs)
+       
         # if current is goal
         if (problem.isGoalState(pos)):
             return rs
